@@ -6,12 +6,24 @@ var Tetris = Tetris || {}
 var CONST = CONST || {}
 
 // Tetris Controller Module
-Tetris.ControllerModule = (function(){
+Tetris.Controller = (function(){
 
 	function init(){
-		Tetris.ModelModule.init();
-		Tetris.ViewModule.init();
+		Tetris.Model.init();
+		Tetris.View.init();
 		_runGame();
+	}
+
+	// Move a block a certain direction ONLY
+	//  if it's going to be a valid move.
+	function moveBlock(dir){
+		if(dir == 'left'){
+			Tetris.Model.getCurrentBlock().coords.x--;
+		}else if(dir == 'right'){
+			Tetris.Model.getCurrentBlock().coords.x++;
+		}else if(dir == 'down'){
+			Tetris.Model.getCurrentBlock().coords.y--;
+		}
 	}
 
 	function _runGame(){
@@ -20,8 +32,8 @@ Tetris.ControllerModule = (function(){
 
 	function _tic(){
 		console.log("Tic");
-		Tetris.ModelModule.dropCurrentBlock();
-		Tetris.ViewModule.renderBlocks();
+		Tetris.Model.dropCurrentBlock();
+		Tetris.View.renderBlocks();
 		_verifyCurrentBlock();
 	}
 
@@ -31,9 +43,9 @@ Tetris.ControllerModule = (function(){
 	// Check to see if the currentBlock is at the bottom.
 	//  if so then initiate placeCurrentBlock.
 	function _verifyCurrentBlock(){
-		var currentBlockCoords = Tetris.ModelModule.getCurrentBlock().coords;
+		var currentBlockCoords = Tetris.Model.getCurrentBlock().coords;
 		if(currentBlockCoords.y == _getColHeight(currentBlockCoords.x)){
-			Tetris.ModelModule.placeCurrentBlock();
+			Tetris.Model.placeCurrentBlock();
 		}
 	}
 
@@ -52,7 +64,8 @@ Tetris.ControllerModule = (function(){
 	}
 
 	return {
-		init: init
+		init: init,
+		moveBlock: moveBlock
 	}
 
 })()

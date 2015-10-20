@@ -6,7 +6,7 @@ var Tetris = Tetris || {}
 var CONST = CONST || {}
 
 // Tetris Controller Module
-Tetris.ModelModule = (function(){
+Tetris.Model = (function(){
 
 	var currentBlock
 	var placedBlocks = []

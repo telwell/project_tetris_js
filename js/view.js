@@ -9,11 +9,27 @@ var CONST = CONST || {}
 	CONST.NUM_COLS = 10;
 
 // Tetris Controller Module
-Tetris.ViewModule = (function(){
+Tetris.View = (function(){
 
 	function init(){
 		_buildBoard();
+		_config();
 		renderBlocks();
+	}
+
+	// Setup our listeners
+	function _config(){;
+		$( window ).keydown(function(e){
+
+			if(e.which == 37){
+				Tetris.Controller.moveBlock('left');
+			}else if(e.which == 39){
+				Tetris.Controller.moveBlock('right');
+			} else if(e.which == 40){
+				Tetris.Controller.moveBlock('down');
+			}
+			renderBlocks();
+		});
 	}
 
 	function _buildBoard(){
@@ -37,7 +53,7 @@ Tetris.ViewModule = (function(){
 
 	function renderBlocks(){
 		$('.current-block').removeClass('current-block');
-		var currentBlock = Tetris.ModelModule.getCurrentBlock();
+		var currentBlock = Tetris.Model.getCurrentBlock();
 		$('[data-x='+ currentBlock.coords.x +'][data-y='+ currentBlock.coords.y +']').addClass('current-block');
 	}
 
