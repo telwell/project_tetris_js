@@ -20,7 +20,6 @@ Tetris.View = (function(){
 	// Setup our listeners
 	function _config(){;
 		$( window ).keydown(function(e){
-
 			if(e.which == 37){
 				Tetris.Controller.moveBlock('left');
 			}else if(e.which == 39){

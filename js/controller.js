@@ -17,11 +17,11 @@ Tetris.Controller = (function(){
 	// Move a block a certain direction ONLY
 	//  if it's going to be a valid move.
 	function moveBlock(dir){
-		if(dir == 'left'){
+		if(dir == 'left' && _validMoveLeft()){
 			Tetris.Model.getCurrentBlock().coords.x--;
-		}else if(dir == 'right'){
+		}else if(dir == 'right' && _validMoveRight()){
 			Tetris.Model.getCurrentBlock().coords.x++;
-		}else if(dir == 'down'){
+		}else if(dir == 'down' && _validMoveDown()){
 			Tetris.Model.getCurrentBlock().coords.y--;
 		}
 	}
@@ -43,10 +43,34 @@ Tetris.Controller = (function(){
 	// Check to see if the currentBlock is at the bottom.
 	//  if so then initiate placeCurrentBlock.
 	function _verifyCurrentBlock(){
-		var currentBlockCoords = Tetris.Model.getCurrentBlock().coords;
-		if(currentBlockCoords.y == _getColHeight(currentBlockCoords.x)){
+		var theseCoords = Tetris.Model.getCurrentBlock().coords;
+		if(theseCoords.y == _getColHeight(theseCoords.x)){
 			Tetris.Model.placeCurrentBlock();
 		}
+	}
+
+	function _validMoveLeft(){
+		var theseCoords = Tetris.Model.getCurrentBlock().coords;
+		return ((theseCoords.x == 0 || _checkIfPlaced(parseInt(theseCoords.x)-1, theseCoords.y)) ? false : true);
+	}
+
+	function _validMoveRight(){
+		var theseCoords = Tetris.Model.getCurrentBlock().coords;
+		return ((theseCoords.x == 9 || _checkIfPlaced(parseInt(theseCoords.x)+1, theseCoords.y)) ? false : true);
+	}
+
+	function _checkIfPlaced(x,y){
+		return ($('[data-x="'+ x +'"][data-y="'+ y +'"]').hasClass('placed-block') ? true : false);
+	}
+
+	// Was experiencing a bug where the block could fall off the board
+	//  or through a placed piece. Turns out it was b/c the bloc was 
+	//  moving down one Y before the lowest block, then _tic would run
+	//  and push it all the way through. This is why I added 1 to the 
+	//  comparison case here so that this now
+	function _validMoveDown(){
+		var theseCoords = Tetris.Model.getCurrentBlock().coords;
+		return ((theseCoords.y <= _getColHeight(theseCoords.x)+1) ? false : true);
 	}
 
 	// Function to determine the Y height of the COL which
@@ -55,7 +79,6 @@ Tetris.Controller = (function(){
 		var placedBlocksInCol = $('.placed-block[data-x="'+ col +'"]');
 		var maxHeight = 0;
 		placedBlocksInCol.each(function(i, el){
-			console.log($(el).attr('data-y'));
 			if(parseInt($(el).attr('data-y'))+1 > maxHeight){
 				maxHeight = parseInt($(el).attr('data-y'))+1;
 			}

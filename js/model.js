@@ -18,7 +18,7 @@ Tetris.Model = (function(){
 	// Block constructor
 	function Block(){
 		this.rotation = 0;
-		this.coords =  {x: 0, y: 19};
+		this.coords =  {x: _randomX(), y: 19};
 	}
 
 	function getCurrentBlock(){
@@ -40,6 +40,11 @@ Tetris.Model = (function(){
 
 	function dropCurrentBlock(){
 		currentBlock.coords.y--;
+	}
+
+	// Give our starting block a random X coord
+	function _randomX(){
+		return Math.floor((Math.random() * 10));
 	}
 
 	return {
