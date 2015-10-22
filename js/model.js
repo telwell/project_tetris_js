@@ -6,19 +6,13 @@ var Tetris = Tetris || {}
 var CONST = CONST || {}
 
 // Tetris Controller Module
-Tetris.Model = (function(){
+Tetris.Model = (function(Blocks){
 
 	var currentBlock
 	var placedBlocks = []
 
 	function init(){
-		currentBlock = new Block;
-	}
-
-	// Block constructor
-	function Block(){
-		this.rotation = 0;
-		this.coords =  {x: _randomX(), y: 19};
+		currentBlock = _randomBlock();
 	}
 
 	function getCurrentBlock(){
@@ -31,7 +25,7 @@ Tetris.Model = (function(){
 	function placeCurrentBlock(){
 		$('.current-block').removeClass('current-block').addClass('placed-block')
 		placedBlocks.push(currentBlock);
-		currentBlock = new Block;
+		currentBlock = _randomBlock();
 	}
 
 	function getPlacedBlocks(){
@@ -39,12 +33,22 @@ Tetris.Model = (function(){
 	}
 
 	function dropCurrentBlock(){
-		currentBlock.coords.y--;
+		var blockCoords = currentBlock.coords;
+		for(var i=0;i<blockCoords.length;i++){
+			blockCoords[i].y--;
+		}
 	}
 
 	// Give our starting block a random X coord
 	function _randomX(){
 		return Math.floor((Math.random() * 10));
+	}
+
+	// Build a random block from our array of block constructors
+	function _randomBlock(){
+		var i = Math.floor((Math.random() * 5));
+		var blocks = [Blocks.SquareBlock, Blocks.LineBlock, Blocks.LLeftBlock, Blocks.LRightBlock, Blocks.SRightBlock, Blocks.SLeftBlock];
+		return new blocks[i];
 	}
 
 	return {
@@ -55,4 +59,4 @@ Tetris.Model = (function(){
 		dropCurrentBlock, dropCurrentBlock
 	}
 
-})()
+})(Tetris.Blocks)

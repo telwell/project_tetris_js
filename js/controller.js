@@ -17,12 +17,36 @@ Tetris.Controller = (function(){
 	// Move a block a certain direction ONLY
 	//  if it's going to be a valid move.
 	function moveBlock(dir){
-		if(dir == 'left' && _validMoveLeft()){
-			Tetris.Model.getCurrentBlock().coords.x--;
-		}else if(dir == 'right' && _validMoveRight()){
-			Tetris.Model.getCurrentBlock().coords.x++;
-		}else if(dir == 'down' && _validMoveDown()){
-			Tetris.Model.getCurrentBlock().coords.y--;
+		var blockCoords = Tetris.Model.getCurrentBlock().coords;
+		if(dir == 'left' && _validMoveLeft(blockCoords)){
+			for(var i=0;i<blockCoords.length;i++){
+				blockCoords[i].x--;
+			}
+		}else if(dir == 'right' && _validMoveRight(blockCoords)){
+			for(var i=0;i<blockCoords.length;i++){
+				blockCoords[i].x++;
+			}
+		}else if(dir == 'down' && _validMoveDown(blockCoords)){
+			for(var i=0;i<blockCoords.length;i++){
+				blockCoords[i].y--;
+			}
+		}
+	}
+
+	function rotateBlock(){
+		var blockCoords = Tetris.Model.getCurrentBlock().coords;
+		var pivotIndex = Tetris.Model.getCurrentBlock().pivot;
+		var pivot = blockCoords[pivotIndex];
+		// So we need to rotate the points relative to the pivot point
+		//  at this moment in time. The equation for a 90 deg. rotation 
+		//  is (x,y) -> (y,-x).
+		for(var i=0;i<blockCoords.length;i++){
+			var tempX = blockCoords[i].x - pivot.x;
+			var tempY = blockCoords[i].y - pivot.y;
+			var newX = tempY;
+			var newY = -tempX;
+			blockCoords[i].x = pivot.x + newX;
+			blockCoords[i].y = pivot.y + newY;
 		}
 	}
 
@@ -31,7 +55,6 @@ Tetris.Controller = (function(){
 	}
 
 	function _tic(){
-		console.log("Tic");
 		Tetris.Model.dropCurrentBlock();
 		Tetris.View.renderBlocks();
 		_verifyCurrentBlock();
@@ -43,20 +66,32 @@ Tetris.Controller = (function(){
 	// Check to see if the currentBlock is at the bottom.
 	//  if so then initiate placeCurrentBlock.
 	function _verifyCurrentBlock(){
-		var theseCoords = Tetris.Model.getCurrentBlock().coords;
-		if(theseCoords.y == _getColHeight(theseCoords.x)){
-			Tetris.Model.placeCurrentBlock();
+		var blockCoords = Tetris.Model.getCurrentBlock().coords;
+		for(var i=0;i<blockCoords.length;i++){
+			if(blockCoords[i].y == _getColHeight(blockCoords[i].x)){
+				Tetris.Model.placeCurrentBlock();
+			}
 		}
 	}
 
-	function _validMoveLeft(){
-		var theseCoords = Tetris.Model.getCurrentBlock().coords;
-		return ((theseCoords.x == 0 || _checkIfPlaced(parseInt(theseCoords.x)-1, theseCoords.y)) ? false : true);
+	function _validMoveLeft(blockCoords){
+		var trigger = true;
+		for(var i=0;i<blockCoords.length;i++){
+			if(blockCoords[i].x == 0 || _checkIfPlaced(parseInt(blockCoords[i].x)-1, blockCoords[i].y)){
+				trigger = false;
+			}
+		}
+		return trigger;
 	}
 
-	function _validMoveRight(){
-		var theseCoords = Tetris.Model.getCurrentBlock().coords;
-		return ((theseCoords.x == 9 || _checkIfPlaced(parseInt(theseCoords.x)+1, theseCoords.y)) ? false : true);
+	function _validMoveRight(blockCoords){
+		var trigger = true;
+		for(var i=0;i<blockCoords.length;i++){
+			if(blockCoords[i].x == 9 || _checkIfPlaced(parseInt(blockCoords[i].x)+1, blockCoords[i].y)){
+				trigger = false;
+			}
+		}
+		return trigger;
 	}
 
 	function _checkIfPlaced(x,y){
@@ -67,10 +102,16 @@ Tetris.Controller = (function(){
 	//  or through a placed piece. Turns out it was b/c the bloc was 
 	//  moving down one Y before the lowest block, then _tic would run
 	//  and push it all the way through. This is why I added 1 to the 
-	//  comparison case here so that this now
-	function _validMoveDown(){
-		var theseCoords = Tetris.Model.getCurrentBlock().coords;
-		return ((theseCoords.y <= _getColHeight(theseCoords.x)+1) ? false : true);
+	//  comparison case here so that this now stops allowing down 1 above
+	//  the highest piece.
+	function _validMoveDown(blockCoords){
+		var trigger = true;
+		for(var i=0;i<blockCoords.length;i++){
+			if(blockCoords[i].y <= _getColHeight(blockCoords[i].x)+1){
+				trigger = false;
+			}
+		}
+		return trigger;
 	}
 
 	// Function to determine the Y height of the COL which
@@ -88,7 +129,8 @@ Tetris.Controller = (function(){
 
 	return {
 		init: init,
-		moveBlock: moveBlock
+		moveBlock: moveBlock,
+		rotateBlock: rotateBlock
 	}
 
 })()

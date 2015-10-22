@@ -26,6 +26,8 @@ Tetris.View = (function(){
 				Tetris.Controller.moveBlock('right');
 			} else if(e.which == 40){
 				Tetris.Controller.moveBlock('down');
+			} else if(e.which == 32){
+				Tetris.Controller.rotateBlock();
 			}
 			renderBlocks();
 		});
@@ -50,10 +52,13 @@ Tetris.View = (function(){
 		$('#tetris-wrapper').append(buffer);
 	}
 
+	// Works with shapes now!
 	function renderBlocks(){
 		$('.current-block').removeClass('current-block');
-		var currentBlock = Tetris.Model.getCurrentBlock();
-		$('[data-x='+ currentBlock.coords.x +'][data-y='+ currentBlock.coords.y +']').addClass('current-block');
+		var currentBlock = Tetris.Model.getCurrentBlock().coords;
+		for(var i=0;i<currentBlock.length;i++){
+			$('[data-x='+ currentBlock[i].x +'][data-y='+ currentBlock[i].y +']').addClass('current-block');
+		}
 	}
 
 	return {
