@@ -157,11 +157,19 @@ Tetris.Controller = (function(){
 		var placedBlocks = Tetris.Model.getPlacedBlocks();
 		var newPlacedBlocks = [];
 		for(var i=0;i<placedBlocks.length;i++){
-			if(!placedBlocks[i].y == row){
-				var tempCoords = {x: placedBlocks[i].x, y: placedBlocks[i].y-1};
-				newPlacedBlocks.push(tempCoords);
+			// QUESTION: Not putting the bang! in () was a huge bug...
+			//  what's up with that? 
+			if(!(placedBlocks[i].coords.y == row)){
+				if(placedBlocks[i].coords.y < row){
+					// If it's below the full row we don't want it removed.
+					var tempBlock = new Tetris.Blocks.SubBlock({x: placedBlocks[i].coords.x, y: placedBlocks[i].coords.y}, placedBlocks[i].color);
+				} else {
+					var tempBlock = new Tetris.Blocks.SubBlock({x: placedBlocks[i].coords.x, y: placedBlocks[i].coords.y-1}, placedBlocks[i].color);
+				}
+				newPlacedBlocks.push(tempBlock);
 			}
 		}
+		debugger;
 		Tetris.Model.setPlacedBlocks(newPlacedBlocks);
 		Tetris.View.renderPlacedBlocks();
 	}

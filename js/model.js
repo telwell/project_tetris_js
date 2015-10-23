@@ -33,7 +33,7 @@ Tetris.Model = (function(Blocks){
 	function placeCurrentBlock(){
 		$('.current-block').removeClass('current-block').addClass('placed-block')
 		for(var i=0;i<currentBlock.coords.length;i++){
-			placedBlocks.push(currentBlock.coords[i]);
+			placedBlocks.push(new Blocks.SubBlock(currentBlock.coords[i], currentBlock.color));
 		}
 		Tetris.Controller.checkFullRows();
 		currentBlock = _randomBlock();
@@ -55,7 +55,13 @@ Tetris.Model = (function(Blocks){
 	function _randomBlock(){
 		var i = Math.floor((Math.random() * 5));
 		var blocks = [Blocks.SquareBlock, Blocks.LineBlock, Blocks.LLeftBlock, Blocks.LRightBlock, Blocks.SRightBlock, Blocks.SLeftBlock];
-		return new blocks[i];
+		return new blocks[i](_randomColor());
+	}
+
+	function _randomColor(){
+		var i = Math.floor((Math.random() * 5));
+		var colors = ['blue','red','green','purple','yellow'];
+		return colors[i];
 	}
 
 	return {

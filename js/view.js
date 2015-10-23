@@ -55,18 +55,25 @@ Tetris.View = (function(){
 
 	// Works with shapes now!
 	function renderCurrentBlock(){
-		$('.current-block').removeClass('current-block');
-		var currentBlock = Tetris.Model.getCurrentBlock().coords;
-		for(var i=0;i<currentBlock.length;i++){
-			$('[data-x='+ currentBlock[i].x +'][data-y='+ currentBlock[i].y +']').addClass('current-block');
+		$('.current-block').removeClass('current-block').
+		removeClass (function (index, css) {
+			return (css.match (/(color-.*)/g)[0]);			
+		});
+		var currentBlock = Tetris.Model.getCurrentBlock();
+		var blockCoords = Tetris.Model.getCurrentBlock().coords;
+		for(var i=0;i<blockCoords.length;i++){
+			$('[data-x='+ blockCoords[i].x +'][data-y='+ blockCoords[i].y +']').addClass('current-block').addClass('color-' + currentBlock.color);
 		}
 	}
 
 	function renderPlacedBlocks(){
 		var placedBlocks = Tetris.Model.getPlacedBlocks();
-		$('.placed-block').removeClass('placed-block');
+		$('.placed-block').removeClass('placed-block').
+		removeClass (function (index, css) {
+			return (css.match (/(color-.*)/g)[0]);			
+		});
 		for(var i=0;i<placedBlocks.length;i++){
-			$('[data-x='+ placedBlocks[i].x +'][data-y='+ placedBlocks[i].y +']').addClass('placed-block');	
+			$('[data-x='+ placedBlocks[i].coords.x +'][data-y='+ placedBlocks[i].coords.y +']').addClass('placed-block').addClass('color-' + placedBlocks[i].color);
 		}
 	}
 

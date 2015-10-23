@@ -9,10 +9,22 @@
 	height: 30px;
 }
 
-.tetris-table td.current-block{
-	background-color: aqua;
+.tetris-table td.color-blue{
+	background-color: #15317E;
 }
 
-.tetris-table td.placed-block{
-	background-color: orange;
+.tetris-table td.color-red{
+	background-color: #F75D59;	
+}
+
+.tetris-table td.color-green{
+	background-color: #347C17;	
+}
+
+.tetris-table td.color-purple{
+	background-color: #7D0552;	
+}
+
+.tetris-table td.color-yellow{
+	background-color: #FFD801;	
 }
