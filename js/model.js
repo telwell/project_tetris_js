@@ -10,6 +10,7 @@ Tetris.Model = (function(Blocks){
 
 	var currentBlock
 	var placedBlocks = []
+	var score = 0
 
 	function init(){
 		currentBlock = _randomBlock();
@@ -46,6 +47,11 @@ Tetris.Model = (function(Blocks){
 		}
 	}
 
+	function incScore(){
+		score += 50;
+		$('#score').html('Score: ' + score);
+	}
+
 	// Give our starting block a random X coord
 	function _randomX(){
 		return Math.floor((Math.random() * 10));
@@ -60,7 +66,7 @@ Tetris.Model = (function(Blocks){
 
 	function _randomColor(){
 		var i = Math.floor((Math.random() * 5));
-		var colors = ['blue','red','green','purple','yellow'];
+		var colors = ['blue','red','green','brown','yellow'];
 		return colors[i];
 	}
 
@@ -70,7 +76,8 @@ Tetris.Model = (function(Blocks){
 		placeCurrentBlock, placeCurrentBlock, 
 		getPlacedBlocks: getPlacedBlocks, 
 		setPlacedBlocks: setPlacedBlocks,
-		dropCurrentBlock, dropCurrentBlock
+		dropCurrentBlock, dropCurrentBlock, 
+		incScore: incScore
 	}
 
 })(Tetris.Blocks)

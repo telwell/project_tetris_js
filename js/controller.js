@@ -145,11 +145,16 @@ Tetris.Controller = (function(){
 	//  will then remove the blocks in that row and move every other 
 	//  placed block above it down one cell.
 	function checkFullRows(){
+		var rowsToDestroy = [];
 		for(var i=0;i<CONST.NUM_ROWS;i++){
 			var row = $('[data-y="'+ i +'"].placed-block');
 			if(row.length == CONST.NUM_COLS){
-				_destroyRow(i);
+				rowsToDestroy.push(i);
 			}
+		}
+		while(rowsToDestroy.length > 0){
+			_destroyRow(rowsToDestroy.pop());
+			Tetris.Model.incScore();
 		}
 	}
 
@@ -169,7 +174,6 @@ Tetris.Controller = (function(){
 				newPlacedBlocks.push(tempBlock);
 			}
 		}
-		debugger;
 		Tetris.Model.setPlacedBlocks(newPlacedBlocks);
 		Tetris.View.renderPlacedBlocks();
 	}
