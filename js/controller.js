@@ -56,21 +56,31 @@ Tetris.Controller = (function(){
 
 	function _tic(){
 		Tetris.Model.dropCurrentBlock();
-		Tetris.View.renderBlocks();
+		Tetris.View.renderCurrentBlock();
+		var test = Tetris.Model.getPlacedBlocks();
+		for(var i=0;i<test.length;i++){
+			if(test[i].y > 17){
+				debugger;
+			}
+		}
 		_verifyCurrentBlock();
 	}
 
-	// Will need to be adjusted once we have actual 
-	//  blocks as shapes.
-	//
 	// Check to see if the currentBlock is at the bottom.
 	//  if so then initiate placeCurrentBlock.
 	function _verifyCurrentBlock(){
 		var blockCoords = Tetris.Model.getCurrentBlock().coords;
+		var trigger = false;
 		for(var i=0;i<blockCoords.length;i++){
 			if(blockCoords[i].y == _getColHeight(blockCoords[i].x)){
-				Tetris.Model.placeCurrentBlock();
+				trigger = true;
 			}
+		}
+		// I had to turn this into a trigger pattern
+		//  otherwise it would call placeCurrentBlock() 
+		//  multiple times.
+		if(trigger == true){
+			Tetris.Model.placeCurrentBlock();
 		}
 	}
 
@@ -116,6 +126,10 @@ Tetris.Controller = (function(){
 
 	// Function to determine the Y height of the COL which
 	//  the block is currently in.
+	// 
+	//  TODO: Change this function so that it is based on the
+	//   getPlacedBlocks in the model as opposed to pulling 
+	//   from the DOM.
 	function _getColHeight(col){
 		var placedBlocksInCol = $('.placed-block[data-x="'+ col +'"]');
 		var maxHeight = 0;
@@ -127,10 +141,36 @@ Tetris.Controller = (function(){
 		return maxHeight;
 	}
 
+	// This function will check to see if any rows are completely full, 
+	//  will then remove the blocks in that row and move every other 
+	//  placed block above it down one cell.
+	function checkFullRows(){
+		for(var i=0;i<CONST.NUM_ROWS;i++){
+			var row = $('[data-y="'+ i +'"].placed-block');
+			if(row.length == CONST.NUM_COLS){
+				_destroyRow(i);
+			}
+		}
+	}
+
+	function _destroyRow(row){
+		var placedBlocks = Tetris.Model.getPlacedBlocks();
+		var newPlacedBlocks = [];
+		for(var i=0;i<placedBlocks.length;i++){
+			if(!placedBlocks[i].y == row){
+				var tempCoords = {x: placedBlocks[i].x, y: placedBlocks[i].y-1};
+				newPlacedBlocks.push(tempCoords);
+			}
+		}
+		Tetris.Model.setPlacedBlocks(newPlacedBlocks);
+		Tetris.View.renderPlacedBlocks();
+	}
+
 	return {
 		init: init,
 		moveBlock: moveBlock,
-		rotateBlock: rotateBlock
+		rotateBlock: rotateBlock, 
+		checkFullRows: checkFullRows
 	}
 
 })()

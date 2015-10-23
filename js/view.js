@@ -14,7 +14,7 @@ Tetris.View = (function(){
 	function init(){
 		_buildBoard();
 		_config();
-		renderBlocks();
+		renderCurrentBlock();
 	}
 
 	// Setup our listeners
@@ -29,7 +29,8 @@ Tetris.View = (function(){
 			} else if(e.which == 32){
 				Tetris.Controller.rotateBlock();
 			}
-			renderBlocks();
+			// TODO : Do I need this???
+			renderCurrentBlock();
 		});
 	}
 
@@ -53,7 +54,7 @@ Tetris.View = (function(){
 	}
 
 	// Works with shapes now!
-	function renderBlocks(){
+	function renderCurrentBlock(){
 		$('.current-block').removeClass('current-block');
 		var currentBlock = Tetris.Model.getCurrentBlock().coords;
 		for(var i=0;i<currentBlock.length;i++){
@@ -61,9 +62,18 @@ Tetris.View = (function(){
 		}
 	}
 
+	function renderPlacedBlocks(){
+		var placedBlocks = Tetris.Model.getPlacedBlocks();
+		$('.placed-block').removeClass('placed-block');
+		for(var i=0;i<placedBlocks.length;i++){
+			$('[data-x='+ placedBlocks[i].x +'][data-y='+ placedBlocks[i].y +']').addClass('placed-block');	
+		}
+	}
+
 	return {
 		init: init,
-		renderBlocks, renderBlocks
+		renderCurrentBlock, renderCurrentBlock, 
+		renderPlacedBlocks: renderPlacedBlocks
 	}
 
 })()

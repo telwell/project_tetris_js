@@ -19,17 +19,24 @@ Tetris.Model = (function(Blocks){
 		return currentBlock;
 	}
 
+	function getPlacedBlocks(){
+		return placedBlocks;
+	}
+
+	function setPlacedBlocks(array){
+		placedBlocks = array;
+	}
+
 	// Remove the class 'current-block' from the current block
 	//  add the 'placed-block' class, and add the currentBlock 
 	//  to the array of placed blocks. Create new currentBlock.
 	function placeCurrentBlock(){
 		$('.current-block').removeClass('current-block').addClass('placed-block')
-		placedBlocks.push(currentBlock);
+		for(var i=0;i<currentBlock.coords.length;i++){
+			placedBlocks.push(currentBlock.coords[i]);
+		}
+		Tetris.Controller.checkFullRows();
 		currentBlock = _randomBlock();
-	}
-
-	function getPlacedBlocks(){
-		return placedBlocks;
 	}
 
 	function dropCurrentBlock(){
@@ -56,6 +63,7 @@ Tetris.Model = (function(Blocks){
 		getCurrentBlock: getCurrentBlock,
 		placeCurrentBlock, placeCurrentBlock, 
 		getPlacedBlocks: getPlacedBlocks, 
+		setPlacedBlocks: setPlacedBlocks,
 		dropCurrentBlock, dropCurrentBlock
 	}
 
