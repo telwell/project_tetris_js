@@ -52,12 +52,18 @@ Tetris.Model = (function(Blocks){
 		$('#score').html('Score: ' + score);
 	}
 
-	// Give our starting block a random X coord
+	function setCurrentBlockCoords(coords){
+		currentBlock.coords = coords;
+	}
+
+	// TODO: Adapt this to work as an offset for the
+	//  various shapes of the blocks.
 	function _randomX(){
 		return Math.floor((Math.random() * 10));
 	}
 
 	// Build a random block from our array of block constructors
+	//  with a random color.
 	function _randomBlock(){
 		var i = Math.floor((Math.random() * 5));
 		var blocks = [Blocks.SquareBlock, Blocks.LineBlock, Blocks.LLeftBlock, Blocks.LRightBlock, Blocks.SRightBlock, Blocks.SLeftBlock];
@@ -77,7 +83,8 @@ Tetris.Model = (function(Blocks){
 		getPlacedBlocks: getPlacedBlocks, 
 		setPlacedBlocks: setPlacedBlocks,
 		dropCurrentBlock, dropCurrentBlock, 
-		incScore: incScore
+		incScore: incScore, 
+		setCurrentBlockCoords: setCurrentBlockCoords
 	}
 
 })(Tetris.Blocks)

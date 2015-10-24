@@ -29,7 +29,6 @@ Tetris.View = (function(){
 			} else if(e.which == 32){
 				Tetris.Controller.rotateBlock();
 			}
-			// TODO : Do I need this???
 			renderCurrentBlock();
 		});
 	}

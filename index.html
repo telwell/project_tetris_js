@@ -12,14 +12,22 @@
 		<script src="js/run.js"></script>  
 	</head>
 
-	<body>
+	<body class="container">
 		<div class="col-sm-10 col-sm-offset-1">
 			<h2>Tetris</h2>
 			<p>C'mon, you know how to play!</p>
 		</div>
-
-		<div id="tetris-wrapper">
-			<h3 id="score">Score: 0</h3>
+		
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				<h3 id="score">Score: 0</h3>
+			</div>
+			<div class="col-sm-12">
+				<div id="game-loss-overlay">
+					<div id="tetris-wrapper">
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div id="music">

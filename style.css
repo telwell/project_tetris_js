@@ -4,6 +4,23 @@
 	margin: 0px auto;
 }
 
+#game-loss-overlay{
+	width: 300px;
+	display: block;
+	margin: 0px auto;
+}
+
+#loss-text{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#loss-text a{
+	margin-left: 30px;
+}
+
 .tetris-table td{
 	width: 30px;
 	height: 30px;
