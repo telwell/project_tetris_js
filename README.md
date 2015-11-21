@@ -1,4 +1,4 @@
-# Tetris
+# Tetris:
 
 This solution by [Trevor Elwell](http://trevorelwell.me)
 
