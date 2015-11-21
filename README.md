@@ -6,7 +6,7 @@ Link to play: [Tetris](http://trevorelwell.me/tetris)
 
 Blog post explaining how the pieces rotate: [here](http://trevorelwell.me/tetris-js/)
 
-# How to play: 
+# How to Play: 
 Use the **spacebar** key to rotate the pieces as they fall. Use the **left/right arrows** to move the pieces left or right respectively as they fall. 
 
 **Note:**
@@ -29,7 +29,7 @@ Instead of lumping everything into one big JS file I tried to keep things as *ob
 
 Rotating blocks in a coordinate plane using JavaScript is not a simple task. In fact, I wrote an entire [blog post](http://trevorelwell.me/tetris-js/) about how I solved this particular issue.
 
-# TODO's
+# TODO:
 Here are some of the things I'd like to fix in the future:
 
 1. There is a *known bug* where occasionally a piece will be able to rotate into another piece. I believe this has to do with my `_checkIfPlaced` function in `controller.js`. It might not be returning `true` when a block is actually placed sometimes. I need to dive into this further.
