@@ -64,11 +64,7 @@ Tetris.Controller = (function(){
 	//  each SubBlock is going to be valid. This is the validation
 	//  function.
 	function _validRotation(x,y){
-		if(!_checkIfPlaced(x,y) && x >= 0 && x < CONST.NUM_COLS){
-			return true;
-		} else {
-			return false;
-		}
+		return (!_checkIfPlaced(x,y) && x >= 0 && x < CONST.NUM_COLS)
 	}
 
 	function _runGame(){
